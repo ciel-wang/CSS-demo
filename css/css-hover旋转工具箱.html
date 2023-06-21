@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>css动画-hover旋转工具箱</title>
+		<link rel="stylesheet" href="../iconfont/iconfont.css" />
+		<style>
+			body {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: 100vh;
+				background: linear-gradient(45deg, deeppink, skyblue);
+			}
+			.menu {
+				position: relative;
+				width: 200px;
+				height: 200px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.btn {
+				position: absolute;
+				z-index: 100;
+				width: 60px;
+				height: 60px;
+				background-color: #fff;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 50%;
+				box-shadow: 0 3px 4px rgba(0, 0, 0, 0.15);
+				cursor: pointer;
+				transition: all 1.25s;
+			}
+			.btn i {
+				font-size: 32px;
+			}
+			.menu span {
+				width: 40px;
+				height: 40px;
+				background-color: #fff;
+				box-shadow: 0 3px 4px rgba(0, 0, 0, 0.15);
+				position: absolute;
+				left: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 50%;
+				cursor: pointer;
+				/* 绕正中心旋转，添加动画延迟 */
+				transform-origin: 100px;
+				transition-delay: calc(0.1s * var(--i));
+				transition: 0.5s;
+				/* 设置图标居中显示，隐藏在了btn图标下 */
+				transform: rotate(0deg) translateX(80px);
+			}
+			/* 设置图标自带负角度，保证转过来是正的 */
+			.menu span i {
+				transform: rotate(calc(360deg / -8 * var(--i)));
+			}
+			/* hover时动态旋转图标 */
+			.menu:hover span {
+				transform: rotate(calc(360deg / 8 * var(--i)));
+			}
+			.menu:hover .btn {
+				transform: rotate(315deg);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="menu">
+			<div class="btn"><i class="iconfont icon-sousuo"></i></div>
+			<span style="--i: 0"><i class="iconfont icon-shezhi"></i></span>
+			<span style="--i: 1"><i class="iconfont icon-guanyu2"></i></span>
+			<span style="--i: 2"><i class="iconfont icon-shouhuodizhi"></i></span>
+			<span style="--i: 3"><i class="iconfont icon-kefu"></i></span>
+			<span style="--i: 4"><i class="iconfont icon-react"></i></span>
+			<span style="--i: 5"><i class="iconfont icon-Nodejs"></i></span>
+			<span style="--i: 6"><i class="iconfont icon-Vue"></i></span>
+			<span style="--i: 7"><i class="iconfont icon-wenti"></i></span>
+		</div>
+	</body>
+</html>
