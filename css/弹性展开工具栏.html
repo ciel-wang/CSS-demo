@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>css实现工具栏弹性展开效果</title>
+		<link rel="stylesheet" href="../iconfont/iconfont.css" />
+		<style>
+			body {
+				height: 100vh;
+			}
+			.toolbar {
+				position: relative;
+				top: 100px;
+				left: 100px;
+				cursor: pointer;
+			}
+			.btn {
+				width: 70px;
+				height: 70px;
+				border-radius: 50%;
+				background: #3ab09e;
+				position: absolute;
+				color: #fff;
+				text-align: center;
+				left: 90px;
+				z-index: 1;
+			}
+			.btn::after {
+				content: '+';
+				position: absolute;
+				inset: -6.5px;
+				font-size: 3.5em;
+			}
+			.icons {
+				width: 0%;
+				height: 62px;
+				list-style: none;
+				background-color: #fff;
+				box-shadow: 1px 1px 1px 1px #dcdcdc;
+				border-radius: 2em;
+				display: flex;
+				justify-content: space-evenly;
+				align-items: center;
+				margin: 0;
+				overflow: hidden;
+				position: absolute;
+				left: 100px;
+				top: 4px;
+			}
+			.icons li {
+				width: 80px;
+			}
+			.icons li i {
+				color: #3ab09e;
+				font-size: 1.5em !important;
+			}
+			.toolbar:hover .btn {
+				transform: rotate(45deg);
+				left: 0;
+			}
+			.toolbar:hover .icons {
+				width: 640px;
+				padding-left: 100px;
+				left: 10px;
+			}
+			.btn,
+			.icons {
+				transition: all 1s cubic-bezier(0.85, -0.57, 0.37, 2.99);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="toolbar">
+			<div class="btn"></div>
+			<ul class="icons">
+				<li><i class="iconfont icon-shezhi"></i></li>
+				<li><i class="iconfont icon-guanyu2"></i></li>
+				<li><i class="iconfont icon-shouhuodizhi"></i></li>
+				<li><i class="iconfont icon-kefu"></i></li>
+				<li><i class="iconfont icon-react"></i></li>
+				<li><i class="iconfont icon-Nodejs"></i></li>
+				<li><i class="iconfont icon-Vue"></i></li>
+				<li><i class="iconfont icon-wenti"></i></li>
+			</ul>
+		</div>
+	</body>
+</html>

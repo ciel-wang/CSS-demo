@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body></body>
+	<script>
+		var treeList = [
+			{
+				title: "一级1——二级1",
+				parentName: "一级1",
+				parentId: 2,
+				id: 11,
+			},
+			{
+				title: "一级1——二级1——三级1",
+				parentName: "一级1——二级1",
+				parentId: 11,
+				id: 111,
+			},
+			{
+				title: "一级1——二级1——三级2",
+				parentName: "一级1——二级1",
+				parentId: 11,
+				id: 112,
+			},
+			{
+				title: "一级1——二级1——三级3",
+				parentName: "一级1——二级1",
+				parentId: 11,
+				id: 113,
+			},
+			{
+				title: "一级1——二级2",
+				parentName: "一级1",
+				parentId: 2,
+				id: 22,
+			},
+			{
+				title: "一级1——二级2——三级1",
+				parentName: "一级1——二级2",
+				parentId: 22,
+				id: 221,
+			},
+			{
+				title: "一级1",
+				parentName: "",
+				parentId: 1,
+				id: 2,
+			},
+			{
+				title: "一级1——二级2——三级2",
+				parentName: "一级1——二级2",
+				parentId: 22,
+				id: 222,
+			},
+			{
+				title: "一级1——二级2——三级3",
+				parentName: "一级1——二级2",
+				parentId: 22,
+				id: 223,
+			},
+			{
+				title: "一级2——二级1",
+				parentName: "一级2",
+				parentId: 33,
+				id: 331,
+			},
+			{
+				title: "一级2——二级2",
+				parentName: "一级2",
+				parentId: 33,
+				id: 332,
+			},
+			{
+				title: "一级2——二级3",
+				parentName: "一级2",
+				parentId: 33,
+				id: 333,
+			},
+			{
+				title: "一级2",
+				parentName: "",
+				id: 33,
+			},
+		];
+
+		function getTree(data = [], idKey = "id", pidKey = "parentId", childrenKey = "children") {
+			if (!Array.isArray(data)) return [];
+			let arr = JSON.parse(JSON.stringify(data));
+			let obj = {},
+				treeArr = [];
+			arr.forEach((item) => {
+				// item[childrenKey] = [];
+				delete item[childrenKey];
+				obj[item[idKey]] = item;
+			});
+			arr.forEach((item) => {
+				let objItem = obj[item[pidKey]];
+				if (objItem) {
+					(obj[item[pidKey]][childrenKey] || (obj[item[pidKey]][childrenKey] = [])).push(item);
+				} else {
+					treeArr.push(item);
+				}
+			});
+			console.log(treeArr);
+			return treeArr;
+		}
+		// getTree(treeList);
+
+		function getData(array = [], idKey = "id", pidKey = "parentId", childrenKey = "children") {
+			if (!Array.isArray(array)) return [];
+			let obj = {};
+			let arr = JSON.parse(JSON.stringify(array));
+			arr.forEach((item) => {
+				obj[item[idKey]] = item;
+			});
+			let data = arr.filter((item) => {
+				let children = arr.filter((e) => item[idKey] === e[pidKey]);
+				if (children.length) item[childrenKey] = children;
+
+				return !obj[item[pidKey]];
+			});
+			console.log(data);
+			return data;
+		}
+		getData(treeList);
+	</script>
+</html>

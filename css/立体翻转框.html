@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>css实现卡片立体翻转效果</title>
+		<style>
+			.card {
+				width: 300px;
+				height: 400px;
+				position: relative;
+				top: 100px;
+				left: 10%;
+			}
+			.card .front {
+				background: url(../img/source4.jpg);
+				background-size: cover;
+				color: #fff;
+				width: 100%;
+				height: 100%;
+				text-align: center;
+				border-radius: 15px;
+			}
+			.card .front::before {
+				content: '';
+				position: absolute;
+				width: 100%;
+				height: 80px;
+				top: 55%;
+				background-color: rgba(0, 0, 0, 0.45);
+				transform: translate(-50%, -50%);
+			}
+			.card .front p {
+				font-size: 15px;
+				margin: 0;
+				position: absolute;
+				width: 400px;
+				top: 55%;
+				left: 50%;
+				transform: translateX(-50%) translateY(-50%) translateZ(60px);
+			}
+			.card .back {
+				width: 100%;
+				height: 100%;
+				color: #fff;
+				background-color: #191e25;
+				border-radius: 15px;
+				padding: 20px;
+				/* 背面翻转180度 */
+				transform: rotateY(180deg);
+			}
+			/* 设置正反面堆叠 */
+			.card .front,
+			.card .back {
+				position: absolute;
+				top: 0;
+				left: 0;
+				transform-style: preserve-3d;
+				/* 正反面背向屏幕时不可见 */
+				backface-visibility: hidden;
+				transition: transform 1.5s;
+			}
+			.card:hover .front {
+				transform: rotateY(-180deg);
+			}
+			.card:hover .back {
+				transform: rotateY(0deg);
+			}
+			/* 设置文字3d立体效果 */
+			.threeD {
+				backface-visibility: hidden;
+				transform: translateZ(60px);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="card">
+			<div class="front">
+				<p>卡片介绍内容</p>
+			</div>
+			<div class="back">
+				<p class="threeD">背面内容</p>
+			</div>
+		</div>
+	</body>
+</html>

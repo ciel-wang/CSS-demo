@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>css实现图标展开文字提示框效果</title>
+		<style>
+			.inner {
+				background-color: #09c999;
+				color: #fff;
+				padding: 1em;
+				width: 250px;
+				border-radius: 10px;
+				/* 裁剪成半径10%圆点在90% 20%的圆 */
+				clip-path: circle(10% at 90% 20%);
+				transition: 0.5s ease-in-out;
+			}
+			.inner span {
+				float: right;
+				font-size: 24px;
+				font-weight: 700;
+				/* 设置i在圆内居中 */
+				line-height: 26px;
+				margin-right: 3.5%;
+				transition: color 0.5s;
+			}
+			.inner:hover {
+				clip-path: circle(75%);
+				background-color: #00b6ff;
+			}
+			.inner:hover span {
+				color: rgba(255, 255, 255, 0);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="inner">
+			<span>i</span>
+			<h1>Hey</h1>
+			<p>这是一段文字提示内容</p>
+		</div>
+	</body>
+</html>

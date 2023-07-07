@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>css实现3d轮播卡片效果</title>
+		<style>
+			body {
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				overflow: hidden;
+				background: url(../img/bg4.jpg) center;
+				background-size: cover;
+			}
+			.container {
+				width: 600px;
+				height: 350px;
+				position: relative;
+				/* 增加立体效果 */
+				perspective: 1000px;
+			}
+			.card-box {
+				width: 100%;
+				height: 100%;
+				/* 添加3d盒子属性 */
+				transform-style: preserve-3d;
+				transform-origin: center;
+				animation: cardRotate 10s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+			}
+			.card {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				/* 添加倒影效果 */
+				-webkit-box-reflect: below 10px -webkit-linear-gradient(transparent 50%, rgba(255, 255, 255, 0.3));
+			}
+			.card img {
+				width: 100%;
+				height: 100%;
+				border-radius: 10px;
+			}
+			/* 为每个图设置初始位置 */
+			.card:nth-child(1) {
+				transform: rotateY(0) translateZ(400px);
+			}
+			.card:nth-child(2) {
+				transform: rotateY(120deg) translateZ(400px);
+			}
+			.card:nth-child(3) {
+				transform: rotateY(240deg) translateZ(400px);
+			}
+			@keyframes cardRotate {
+				/* 先位移后旋转 */
+				0%,
+				20% {
+					transform: translateZ(-400px) rotateY(0);
+				}
+				45% {
+					transform: translateZ(-400px) rotateY(-120deg);
+				}
+				75% {
+					transform: translateZ(-400px) rotateY(-240deg);
+				}
+				100% {
+					transform: translateZ(-400px) rotateY(-360deg);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="card-box">
+				<div class="card">
+					<img src="../img/source1.jpg" />
+				</div>
+				<div class="card">
+					<img src="../img/source2.jpg" />
+				</div>
+				<div class="card">
+					<img src="../img/source3.jpg" />
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

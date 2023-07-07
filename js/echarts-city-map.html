@@ -1,0 +1,317 @@
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+	<title></title>
+	<style>
+		body {
+			width: 100%;
+			height: 100%;
+		}
+
+		#mapcontainer {
+			height: 100%;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="mapcontainer"></div>
+	<script type="text/javascript" src="https://a.amap.com/Loca/static/mock/districts.js"></script>
+	<script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=3739a0d0f45be0252132c8334b184e23"></script>
+	<script type="text/javascript" src="https://webapi.amap.com/loader.js"></script>
+	<script type="text/javascript" src="https://webapi.amap.com/ui/1.1/main.js"></script>
+	<script type="text/javascript" crossorigin="anonymous"
+		integrity="sha512-lYwP7J1uo/wdEDtyvu/CjwYzsLnYnr6BInJbt2y5AIMl5PqVnyNh5cCvrrSTSB5Qb62RvdEZbt/rWuVFMHFXOQ=="
+		src="https://lib.baomitu.com/echarts/5.0.2/echarts.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script type="text/javascript">
+		function back() {
+			if (parentInfo.length === 1) {
+				return;
+			}
+			parentInfo.pop()
+			init(parentInfo[parentInfo.length - 1].code)
+			let map = document.getElementById('mapcontainer')
+			map.style.transition = '0.5s'
+			map.style.transform = 'scale(0.8)'
+			setTimeout(function () {
+				map.style.transition = '0.5s'
+				map.style.transform = 'scale(1)'
+			}, 500)
+		}
+		var geoJson = {}
+		var parentInfo = [{
+			cityName: '全国',
+			code: 100000
+		}]
+		var currentIndex = 0
+		init(100000)
+		function init(adcode) {
+			getGeoJson(adcode).then(data => {
+				geoJson = data
+				getMapData()
+			})
+		}
+		function getGeoJson(adcode, childAdcode = '') {
+			return new Promise((resolve, reject) => {
+				function insideFun(adcode, childAdcode) {
+					AMapUI.loadUI(['geo/DistrictExplorer'], DistrictExplorer => {
+						var districtExplorer = new DistrictExplorer();
+						districtExplorer.loadAreaNode(adcode, function (error, areaNode) {
+							if (error) {
+								console.error(error);
+								reject(error);
+								return;
+							}
+							let Json = areaNode.getSubFeatures();
+							if (Json.length === 0) {
+								let parent = areaNode._data.geoData.parent.properties.acroutes;
+								insideFun(parent[parent.length - 1], adcode);
+								return;
+							}
+
+							if (childAdcode) {
+								Json = Json.filter(item => {
+									return item.properties.adcode == childAdcode;
+								});
+							}
+							let mapJson = {
+								features: Json
+							};
+							resolve(mapJson);
+						});
+					});
+				}
+				insideFun(adcode, childAdcode);
+			});
+		}
+		//获取数据
+		function getMapData() {
+			let mapData = [],
+				pointData = [],
+				sum = 0
+			geoJson.features.forEach(item => {
+				let value = Math.random() * (300 - 100) + 200 //200到300之间随机数
+				mapData.push({
+					name: item.properties.name,
+					value: value,
+					cityCode: item.properties.adcode
+				})
+				pointData.push({
+					name: item.properties.name,
+					value: [item.properties.center[0], item.properties.center[1], value],
+					cityCode: item.properties.adcode
+				})
+				sum += value
+			})
+			mapData = mapData.sort(function (a, b) {
+				return b.value - a.value
+			})
+			initEchartMap(mapData, sum, pointData)
+		}
+		//渲染echarts
+		function initEchartMap(mapData, sum, pointData) {
+			var min = mapData[mapData.length - 1].value
+			var max = mapData[0].value
+			if (mapData.length === 1) {
+				min = 0
+			}
+			//全国的时候才显示南海诸岛 只有当注册的名字为china的时候才会显示南海诸岛
+			echarts.registerMap(parentInfo.length === 1 ? 'china' : 'map', geoJson);
+			var option = {
+				baseOption: {
+					backgroundColor: 'rgba(220,220,220,0)',
+					title: [
+					],
+					tooltip: {
+					},
+					grid: {
+						right: '0',
+						top: '0',
+						bottom: '0',
+						width: '0',
+						borderColor: 'rgba(167,167,167,0)',
+						show: false
+					},
+					toolbox: {
+					},
+					geo: {
+						map: parentInfo.length === 1 ? 'china' : 'map',
+						zoom: 1,
+						roam: true,
+						left: 'center',
+						top: '15%',
+						tooltip: {
+							trigger: 'item',
+							formatter: (p) => {
+								let val = p.value[2];
+								if (window.isNaN(val)) {
+									val = 0;
+								}
+								let txtCon =
+									"<div style='text-align:left'>" + p.name + ":<br />成交额：" + val.toFixed(2) + '万</div>';
+								return txtCon;
+							}
+						},
+						label: {
+							normal: {
+								show: true,
+								color: "rgb(61,161,173)", //省份标签字体颜色
+								formatter: p => {
+									switch (p.name) {
+										case '内蒙古自治区':
+											p.name = "内蒙古"
+											break;
+										case '西藏自治区':
+											p.name = "西藏"
+											break;
+										case '新疆维吾尔自治区':
+											p.name = "新疆"
+											break;
+										case '宁夏回族自治区':
+											p.name = "宁夏"
+											break;
+										case '广西壮族自治区':
+											p.name = "广西"
+											break;
+										case '香港特别行政区':
+											p.name = "香港"
+											break;
+										case '澳门特别行政区':
+											p.name = "澳门"
+											break;
+									}
+									return p.name;
+								}
+							},
+							emphasis: {
+								show: true,
+								color: '#fff',
+							}
+						},
+						itemStyle: {
+							normal: {
+								areaColor: 'rgba(23,28,51,1)',
+								borderColor: 'rgba(46,133,243,1)',
+								borderWidth: 1.3,
+								shadowBlur: 15,
+								// shadowColor: 'rgb(58,115,192)',
+								shadowOffsetX: 7,
+								shadowOffsetY: 6,
+							},
+							emphasis: {
+								areaColor: 'rgba(46,133,243,0.5)',
+								borderWidth: 1.6,
+								shadowBlur: 25,
+							}
+						},
+					},
+					xAxis: {},
+					yAxis: {},
+					series: [
+						{
+							// name: timeTitle[currentIndex] + '年销售额度',
+							type: 'map',
+							geoIndex: 0,
+							map: parentInfo.length === 1 ? 'china' : 'map',
+							roam: true,
+							zoom: 1.5,
+							tooltip: {
+								trigger: "item",
+								formatter: p => {
+									let val = p.value;
+									if (p.name == '南海诸岛') return
+									if (window.isNaN(val)) {
+										val = 0;
+									}
+									let txtCon =
+										"<div style='text-align:left'>" + p.name + ":<br />成交额：" + val.toFixed(2) + '万</div>';
+									return txtCon;
+								}
+							},
+							label: {
+								normal: {
+									show: false,
+								},
+								emphasis: {
+									show: false,
+								}
+							},
+							data: mapData,
+							// scaleLimit: {
+							//   min: 5,
+							//   max: 6
+							// }
+						},
+						{
+							name: '散点',
+							type: 'effectScatter',
+							coordinateSystem: 'geo',
+							rippleEffect: {
+								brushType: 'fill'
+							},
+							itemStyle: {
+								normal: {
+									color: 'rgba(75,200,214,1)',
+									shadowBlur: 10,
+									shadowColor: '#333'
+								}
+							},
+							data: pointData,
+							symbolSize: function (val) {
+								let value = val[2]
+								if (value == max) {
+									return 14
+								}
+								return 6
+							},
+							// showEffectOn: 'render', //加载完毕显示特效
+						},
+					]
+				},
+			}
+			var chartDom = document.getElementById("mapcontainer");
+			let myChart = echarts.init(chartDom, "transparent");
+			myChart.setOption(option, true)
+			//点击前解绑，防止点击事件触发多次
+			myChart.off('click');
+			myChart.on('click', echartsMapClick);
+			//监听时间切换事件
+			myChart.off('timelinechanged');
+			myChart.on('timelinechanged', params => {
+				currentIndex = params.currentIndex;
+				getMapData();
+			});
+		}
+		//echarts点击事件
+		function echartsMapClick(params) {
+			if (!params.data) {
+				return
+			} else {
+				//如果当前是最后一级，那就直接return
+				if (parentInfo[parentInfo.length - 1].code == params.data.cityCode) {
+					return
+				}
+				let data = params.data
+				parentInfo.push({
+					cityName: data.name,
+					code: data.cityCode
+				})
+				init(data.cityCode)
+				let map = document.getElementById('mapcontainer')
+				map.style.transition = '0.5s'
+				map.style.transform = 'scale(0.8)'
+				setTimeout(function () {
+					map.style.transition = '0.5s'
+					map.style.transform = 'scale(1)'
+				}, 500)
+			}
+		}
+	</script>
+</body>
+
+</html>

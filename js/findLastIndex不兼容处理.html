@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+		<title>Array.findLastIndex不兼容处理</title>
+	</head>
+	<body>
+		<script>
+			function findLastIndex(arr, predicate) {
+				for (let i = arr.length - 1; i >= 0; i--) {
+					if (predicate(arr[i], i, arr)) {
+						return i;
+					}
+				}
+				return -1;
+			}
+			const arr = [
+				{
+					site_name: '公司',
+					site_type: 1,
+					id: 64,
+					is_pass: 1,
+				},
+				{
+					site_name: '公司2',
+					site_type: 1,
+					id: 65,
+					is_pass: 1,
+				},
+				{
+					site_name: '公司3',
+					site_type: 1,
+					id: 66,
+					is_pass: 1,
+				},
+				{
+					site_name: '公司4',
+					site_type: 1,
+					id: 67,
+					is_pass: 0,
+				},
+				{
+					site_name: '公司5',
+					site_type: 1,
+					id: 68,
+					is_pass: 0,
+				},
+			];
+			let index = findLastIndex(arr, (obj) => obj.is_pass == 1 && obj.site_type != 2);
+			console.log(index);
+		</script>
+	</body>
+</html>
