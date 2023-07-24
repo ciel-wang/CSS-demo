@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			body {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 100vh;
+				background-color: #1d2630;
+			}
+			.pacman {
+				position: relative;
+			}
+			/* 用伪元素创建两个半圆组成吃豆人 */
+			.pacman::before,
+			.pacman::after {
+				content: '';
+				position: absolute;
+				width: 100px;
+				height: 50px;
+				border-radius: 50px 50px 0 0;
+				margin-top: -50px;
+				margin-left: -50px;
+				background-color: #ffee07;
+			}
+			.pacman::before {
+				animation: up 0.4s infinite;
+			}
+			.pacman::after {
+				margin-top: -1px;
+				border-radius: 0 0 50px 50px;
+				animation: down 0.4s infinite;
+			}
+			/* 设置眼睛 */
+			.pacman .ojo {
+				position: absolute;
+				width: 13px;
+				height: 13px;
+				background-color: black;
+				border-radius: 50%;
+				bottom: 20px;
+				left: 20px;
+				z-index: 2;
+				transform-origin: -20px 0;
+				animation: up 0.4s infinite;
+			}
+			.dot {
+				position: absolute;
+				width: 15px;
+				height: 15px;
+				border-radius: 50%;
+				margin-top: -5px;
+				margin-left: 30px;
+				background-color: #ffee07;
+				box-shadow: 40px 0 0 #ffee07, 80px 0 0 #ffee07, 120px 0 0 #ffee07;
+				animation: right_to_left 0.4s infinite;
+			}
+			/* 嘴巴张合动画 */
+			@keyframes up {
+				0%,
+				100% {
+					transform: rotate(0);
+				}
+				50% {
+					transform: rotate(-40deg);
+				}
+			}
+			@keyframes down {
+				0%,
+				100% {
+					transform: rotate(0);
+				}
+				50% {
+					transform: rotate(40deg);
+				}
+			}
+			@keyframes right_to_left {
+				to {
+					margin-left: -10px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="pacman">
+			<div class="ojo"></div>
+		</div>
+		<div class="dot"></div>
+	</body>
+</html>

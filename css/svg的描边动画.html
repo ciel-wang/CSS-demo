@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>svg的描边动画之tabs切换</title>
+		<style>
+			.path {
+				fill: none;
+				stroke: red;
+				stroke-width: 10px;
+				stroke-dasharray: var(--x2);
+				stroke-dashoffset: var(--x2);
+				animation: stroke 4s forwards;
+			}
+			@keyframes stroke {
+				to {
+					stroke-dashoffset: 0;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<!-- <svg class="icon" width="200" height="200">
+				<line class="path" x1="0" x2="100%" y1="50%" y2="100%"></line>
+				<circle class="path" cx="50%" cy="50%" r="30%"></circle>
+			</svg> -->
+			<svg
+				t="1689040588227"
+				class="icon"
+				viewBox="0 0 1024 1024"
+				version="1.1"
+				xmlns="http://www.w3.org/2000/svg"
+				p-id="35383"
+				xmlns:xlink="http://www.w3.org/1999/xlink"
+				width="78"
+				height="78"
+			>
+				<path
+					d="M820.6 95.4H203.4C135.3 95.4 80 150.7 80 218.9v586.3c0 68.2 55.3 123.4 123.4 123.4h617.1c68.2 0 123.4-55.3 123.4-123.4V218.9c0.1-68.2-55.2-123.5-123.3-123.5zM296 866.9h-92.6c-34.1 0-61.7-27.6-61.7-61.7v-432H296v493.7z m586.3-61.7c0 34.1-27.6 61.7-61.7 61.7H357.7V373.2h524.6v432z m0-493.8H141.7v-92.6c0-34.1 27.6-61.7 61.7-61.7h617.1c34.1 0 61.7 27.6 61.7 61.7v92.6z m-648-92.5c-17 0-30.9 13.8-30.9 30.9 0 17 13.8 30.9 30.9 30.9 17 0 30.9-13.8 30.9-30.9-0.1-17.1-13.9-30.9-30.9-30.9z m92.6 0c-17 0-30.9 13.8-30.9 30.9 0 17 13.8 30.9 30.9 30.9 17 0 30.9-13.8 30.9-30.9-0.1-17.1-13.9-30.9-30.9-30.9z m92.5 0c-17 0-30.9 13.8-30.9 30.9 0 17 13.8 30.9 30.9 30.9s30.9-13.8 30.9-30.9c0-17.1-13.8-30.9-30.9-30.9z"
+					p-id="35384"
+					class="path"
+				></path>
+			</svg>
+
+			<svg
+				t="1689040275021"
+				class="icon"
+				viewBox="0 0 1024 1024"
+				version="1.1"
+				xmlns="http://www.w3.org/2000/svg"
+				p-id="21708"
+				width="88"
+				height="88"
+				xmlns:xlink="http://www.w3.org/1999/xlink"
+			>
+				<path d="M192 832v-64h640v64z m0-256v-64h640v64z m0-256v-64h640v64z" p-id="21709" class="path"></path>
+			</svg>
+
+			<svg
+				t="1689040353811"
+				class="icon"
+				viewBox="0 0 1024 1024"
+				version="1.1"
+				xmlns="http://www.w3.org/2000/svg"
+				p-id="24588"
+				xmlns:xlink="http://www.w3.org/1999/xlink"
+				width="68"
+				height="68"
+			>
+				<path
+					d="M957.12 465.664c1.856 3.84 2.88 8.064 2.88 12.544v395.648C960 937.024 922.848 992 868.576 992H155.424C101.152 992 64 937.024 64 873.856V478.208c0-4.48 1.024-8.736 2.88-12.544A191.552 191.552 0 0 1 0 320c0-19.424 17.6-98.72 52.864-237.888A64 64 0 0 1 115.328 32h793.344a64 64 0 0 1 62.464 50.112C1006.368 221.28 1024 300.576 1024 320c0 58.24-25.92 110.432-66.88 145.664zM896 501.088A191.68 191.68 0 0 1 832 512a191.808 191.808 0 0 1-160-85.824A191.808 191.808 0 0 1 512 512a191.808 191.808 0 0 1-160-85.824A191.808 191.808 0 0 1 192 512a191.68 191.68 0 0 1-64-10.912V875.648c0 30.784 16.064 52.352 27.424 52.352h713.152c11.36 0 27.424-21.568 27.424-52.352V501.088zM908.672 96H115.328C81.088 232.608 64 307.264 64 320a128 128 0 0 0 234.72 70.72 64 64 0 0 1 106.56 0A127.808 127.808 0 0 0 512 448a127.808 127.808 0 0 0 106.72-57.28 64 64 0 0 1 106.56 0A128 128 0 0 0 960 320c0-12.736-17.12-87.392-51.328-224zM288 640a32 32 0 0 1 32 32v96a32 32 0 0 1-64 0v-96a32 32 0 0 1 32-32z"
+					p-id="24589"
+					class="path"
+				></path>
+			</svg>
+		</div>
+
+		<script>
+			let pathAll = document.querySelectorAll('.icon .path');
+			pathAll.forEach((path) => {
+				let len = path.getTotalLength();
+				path.style.setProperty('--x2', len + 1); // 加1的目的是圆形能够闭合，len有时候算出来是小数会导致圆形不能闭合
+			});
+		</script>
+	</body>
+</html>

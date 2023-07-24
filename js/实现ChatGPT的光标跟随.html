@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>实现ChatGPT的光标跟随</title>
+		<style>
+			.txt {
+				resize: none;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- 
+      一，文本框高度根据文字长度自动变化；
+      二，闪烁的光标会根据文字的位置变化
+     -->
+		<textarea class="txt" rows="1" oninput="handleChange(event)"></textarea>
+
+		<script>
+			function handleChange(e) {
+				const textarea = e.target;
+				textarea.style.height = 'auto';
+				textarea.style.height = textarea.scrollHeight + 'px';
+			}
+		</script>
+	</body>
+</html>

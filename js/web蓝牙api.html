@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>web调用蓝牙</title>
+	</head>
+	<body>
+		<button id="button">点击</button>
+
+		<script>
+			if (navigator.bluetooth) {
+				console.log('Web Bluetooth is supported');
+				// 添加点击事件监听器
+				document.getElementById('button').addEventListener('click', async () => {
+					try {
+						// 请求授权访问蓝牙设备
+						const device = await navigator.bluetooth.requestDevice({
+							acceptAllDevices: true,
+						});
+						console.log(device);
+
+						// 连接到蓝牙设备
+						// const server = await device.gatt.connect();
+						// 在这里执行你的蓝牙操作，例如读取特征值、写入数据等
+					} catch (error) {
+						console.error('Error:', error);
+					}
+				});
+			} else {
+				console.log('Web Bluetooth is not supported');
+			}
+
+			// let device = await navigator.bluetooth.requestDevice({
+			// 	// filters: [
+			// 	// 	{ name: '蓝牙设备名称' },//通过名称筛选
+			// 	// 	{ services: [0xfeff] },//通过UUID筛选，可以提供完整的蓝牙UUID或简短的16位或32位形式
+			// 	// 	{ namePrefix: '名称前缀' },//通过设备名称前缀过滤，如果通过名称前缀过滤的话则必须配置optionalServices注意参数内的大写字母都要改成小写
+			// 	// ],
+			// 	// optionalServices: ['0000fff0-XXXX-XXXX-XXXX-00805f9b34fb'],
+			//   acceptAllDevices: true//设置acceptAllDevices代表查询所有蓝牙设备 也是必须配置optionalServices
+			// });
+			// console.log(device);
+			// return;
+			// device.addEventListener('gattserverdisconnected', onDisconnected);//监听设备断开连接
+			// let server = await device.gatt.connect();
+			// let service = await server.getPrimaryService(0xfff0);//这里需要服务UUID 还是可以提供完整的蓝牙UUID或简短的16位或32位形式
+			// let services = await server.getPrimaryServices();//如果如果不清楚服务UUID的话 可以先用getPrimaryServices获取服务的UUID 当然最简单的是去找公司的硬件工程师问一下 不过一般只做硬件工程师之前没有跟全栈这边配合过的话估计他们也不知道该给什么过来
+			// let characteristics = await service.getCharacteristics();//获取设备所有信息特征值
+			// let characteristic = await service.getCharacteristic(0xfff4);//这里需要读的特征值UUID 还是可以提供完整的蓝牙UUID或简短的16位或32位形式  当然最简单的是去找公司的硬件工程师问一下 不过一般只做硬件工程师之前没有跟全栈这边配合过的话估计他们也不知道该给什么过来
+			// characteristic.startNotifications();//开始监听
+			// characteristic.addEventListener(
+			// 	'characteristicvaluechanged', e => {
+			// 		//监听设备端的操作 获取到值之后再解析
+			// 		console.log('e.target.value:',ab2hex(e.target.value.buffer));
+			// 	}
+			// );
+			// let unCharacteristic = await service.getCharacteristic(0xfff5);//这里需要写入的特征值UUID 还是可以提供完整的蓝牙UUID或简短的16位或32位形式  当然最简单的是去找公司的硬件工程师问一下 不过一般只做硬件工程师之前没有跟全栈这边配合过的话估计他们也不知道该给什么过来
+			// await unCharacteristic.writeValue(string2buffer("55AAF001011165F9F10000"))//到这一步就可以写入了	这里的命令还是要去找硬件工程师要
+
+			// function onDisconnected(event) {
+			// 	const device = event.target;
+			// 	console.log(`设备: ${device.name} 已经断开连接`);
+			// }
+			// function string2buffer(str) {
+			// 	let val = "";
+			// 	if (!str) return;
+			// 	let length = str.length;
+			// 	let index = 0;
+			// 	let array = [];
+			// 	while (index < length) {
+			// 		array.push(str.substring(index, index + 2));
+			// 		index = index + 2;
+			// 	}
+			// 	val = array.join(",");
+			// 	// 将16进制转化为ArrayBuffer
+			// 	return new Uint8Array(val.match(/[\da-f]{2}/gi).map(function (h) {
+			// 	return parseInt(h, 16);
+			// 	})).buffer
+			// }
+			// function ab2hex(buffer) {
+			// 	const hexArr = Array.prototype.map.call(
+			// 		new Uint8Array(buffer),
+			// 		function (bit) {
+			// 			return ('00' + bit.toString(16)).slice(-2);
+			// 		}
+			// 	)
+			// 	return hexArr.join('');
+			// }
+		</script>
+	</body>
+</html>
