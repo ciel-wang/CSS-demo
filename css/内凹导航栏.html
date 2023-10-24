@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="../iconfont/iconfont.css" />
+		<style>
+			.nav {
+				display: flex;
+				width: 400px;
+				height: 70px;
+				padding: 0 25px;
+				border-radius: 10px;
+				background-color: antiquewhite;
+				position: relative;
+				top: 30vh;
+				left: 30%;
+			}
+			.nav li {
+				width: 70px;
+				height: 70px;
+				z-index: 1;
+				position: relative;
+				list-style: none;
+				cursor: pointer;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+			.nav li i {
+				display: block;
+				height: 70px;
+				line-height: 70px;
+				font-size: 24px;
+				text-align: center;
+				position: relative;
+				transition: all 0.5s;
+			}
+			.nav li span {
+				position: absolute;
+				font-size: 12px;
+				letter-spacing: 2px;
+				transition: all 0.5s;
+				opacity: 0;
+				transform: translateY(20px);
+			}
+			.nav li.active i {
+				transform: translateY(-35px);
+				color: #fff;
+			}
+			.nav li.active span {
+				opacity: 1;
+				transform: translateY(10px);
+			}
+			.indicator {
+				position: absolute;
+				top: -50%;
+				width: 70px;
+				height: 70px;
+				background-color: #2196f3;
+				border-radius: 50%;
+				transition: all 0.5s;
+				border: 6px solid #fff;
+				box-sizing: border-box;
+			}
+			.indicator::before {
+				content: '';
+				position: absolute;
+				top: 50%;
+				left: -22px;
+				width: 20px;
+				height: 20px;
+				background-color: antiquewhite;
+				border-top-right-radius: 20px;
+				box-shadow: 1px -10px 0 0 #fff;
+			}
+			.indicator::after {
+				content: '';
+				position: absolute;
+				top: 50%;
+				right: -22px;
+				width: 20px;
+				height: 20px;
+				background-color: antiquewhite;
+				border-top-left-radius: 20px;
+				box-shadow: -1px -10px 0 0 #fff;
+			}
+			li:nth-child(1).active ~ .indicator {
+				transform: translateX(calc(70px * 0));
+			}
+			li:nth-child(2).active ~ .indicator {
+				transform: translateX(calc(70px * 1));
+			}
+			li:nth-child(3).active ~ .indicator {
+				transform: translateX(calc(70px * 2));
+			}
+			li:nth-child(4).active ~ .indicator {
+				transform: translateX(calc(70px * 3));
+			}
+			li:nth-child(5).active ~ .indicator {
+				transform: translateX(calc(70px * 4));
+			}
+		</style>
+	</head>
+	<body>
+		<ul class="nav">
+			<li class="active"><i class="iconfont icon-guanyu2"></i><span>Home</span></li>
+			<li><i class="iconfont icon-shezhi"></i><span>Home2</span></li>
+			<li><i class="iconfont icon-react"></i><span>Home3</span></li>
+			<li><i class="iconfont icon-Nodejs"></i><span>Home4</span></li>
+			<li><i class="iconfont icon-shouhuodizhi"></i><span>Home5</span></li>
+			<div class="indicator"></div>
+		</ul>
+
+		<script>
+			const lis = document.querySelectorAll('.nav li');
+			lis.forEach((li) => {
+				li.addEventListener('click', function () {
+					lis.forEach((item) => {
+						item.classList.remove('active');
+						this.classList.add('active');
+					});
+				});
+			});
+		</script>
+	</body>
+</html>
